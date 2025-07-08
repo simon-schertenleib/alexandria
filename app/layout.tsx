@@ -7,6 +7,7 @@ import {
   Sidebar,
   SidebarInset,
 } from "@/components/ui/sidebar";
+import MobileNavbar from "@/components/MobileNavbar";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -70,6 +71,7 @@ export default function RootLayout({
                 </nav>
               </Sidebar>
               <SidebarInset>
+                <MobileNavbar />
                 <div className="flex min-h-screen w-full flex-1 flex-col">
                   {children}
                   <Footer />
