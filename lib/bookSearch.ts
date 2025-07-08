@@ -12,6 +12,20 @@ export interface Book {
   isbn?: string
 }
 
+interface OpenLibraryDoc {
+  key?: string
+  title?: string
+  author_name?: string[]
+  first_publish_year?: number
+  publisher?: string[]
+  isbn?: string[]
+  language?: string[]
+  number_of_pages_median?: number
+  subject?: string[]
+  ratings_average?: number
+  first_sentence?: string | { value?: string } | string[]
+}
+
 /**
  * Search third-party websites for books. This currently returns a
  * static list but can be extended to call external APIs via HTTP.
@@ -104,15 +118,75 @@ export const books: Book[] = [
 ]
 
 export async function searchBooks(query: string): Promise<Book[]> {
-  // TODO: replace with real HTTP call to a third-party API
-
   if (!query) {
     return books
   }
 
-  return books.filter((book) =>
-    book.title.toLowerCase().includes(query.toLowerCase())
-  )
+  const url =
+    `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=10&fields=*`
+
+  try {
+    const res = await fetch(url)
+    if (!res.ok) {
+      console.error(
+        `OpenLibrary request failed: ${res.status} ${res.statusText}`
+      )
+      return []
+    }
+    const data = await res.json()
+    const docs: OpenLibraryDoc[] = Array.isArray(data.docs) ? data.docs : []
+
+    return docs.map((doc: OpenLibraryDoc, idx: number) => {
+      const idMatch = typeof doc.key === 'string' ? doc.key.match(/\d+/) : null
+
+      const book: Book = {
+        id: idMatch ? Number(idMatch[0]) : idx,
+        title: doc.title ?? 'Unknown',
+      }
+
+      if (Array.isArray(doc.author_name) && doc.author_name.length > 0) {
+        book.author = doc.author_name[0]
+      }
+      if (doc.first_publish_year) {
+        book.year = doc.first_publish_year
+      }
+      if (doc.publisher && Array.isArray(doc.publisher) && doc.publisher.length) {
+        book.publisher = doc.publisher[0]
+      }
+      if (doc.isbn && Array.isArray(doc.isbn) && doc.isbn.length) {
+        book.isbn = doc.isbn[0]
+      }
+      if (doc.language && Array.isArray(doc.language) && doc.language.length) {
+        book.language = doc.language[0]
+      }
+      if (doc.number_of_pages_median) {
+        book.pages = doc.number_of_pages_median
+      }
+      if (doc.subject && Array.isArray(doc.subject) && doc.subject.length) {
+        book.genre = doc.subject[0]
+      }
+      if (doc.ratings_average) {
+        book.rating = doc.ratings_average
+      }
+      if (doc.first_sentence) {
+        if (typeof doc.first_sentence === 'string') {
+          book.description = doc.first_sentence
+        } else if (
+          Array.isArray(doc.first_sentence) &&
+          doc.first_sentence.length > 0
+        ) {
+          book.description = doc.first_sentence[0]
+        } else if (typeof doc.first_sentence.value === 'string') {
+          book.description = doc.first_sentence.value
+        }
+      }
+
+      return book
+    })
+  } catch (err) {
+    console.error('Failed to search books from OpenLibrary', err)
+    return []
+  }
 }
 
 export async function getBook(id: number): Promise<Book | undefined> {
