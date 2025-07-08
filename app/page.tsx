@@ -11,7 +11,6 @@ import { toast } from "sonner"
 import type { Book } from "@/lib/bookSearch"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
-import { AspectRatio } from "@/components/ui/aspect-ratio"
 import Image from "next/image"
 
 export default function Home() {
@@ -118,25 +117,22 @@ export default function Home() {
                 : 'https://covers.openlibrary.org/static/images/icons/avatar_book-sm.png'
 
               return (
-                <div key={idx} className="flex gap-2" style={{
-                  height: '182px',
-                }}>
-                  <div className="pl-2 py-2">
-                    <Image
-                      src={imageUrl}
-                      alt="Book cover"
-                      height={164}
-                      width={110}
-                      // for aspect
-                      style={{ objectFit: 'cover', width: '110px', height: '164px' }}
-                      placeholder="blur"
-                      blurDataURL="https://covers.openlibrary.org/static/images/icons/avatar_book-sm.png"
-                      loading="lazy"
-                      className="rounded-md"
-                    />
-                  </div>
-                  <Card className="flex-1">
-                    <CardContent className="flex flex-col gap-2 px-4">
+                <div
+                  key={idx}
+                  className="flex h-56 gap-4"
+                >
+                  <Image
+                    src={imageUrl}
+                    alt="Book cover"
+                    width={110}
+                    height={176}
+                    className="h-full w-[110px] rounded-md object-cover"
+                    placeholder="blur"
+                    blurDataURL="https://covers.openlibrary.org/static/images/icons/avatar_book-sm.png"
+                    loading="lazy"
+                  />
+                  <Card className="flex-1 overflow-hidden">
+                    <CardContent className="flex h-full flex-col gap-2 px-4 overflow-y-auto">
                       <div className="flex items-start justify-between">
                         <div>
                           <CardTitle>{book.title}</CardTitle>
@@ -151,13 +147,20 @@ export default function Home() {
                         )}
                       </div>
                       {book.description && (
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-sm text-muted-foreground line-clamp-2">
                           {book.description}
                         </p>
                       )}
                       {book.rating && (
                         <Badge variant="outline">Rating: {book.rating.toFixed(1)}</Badge>
                       )}
+                      <div className="space-y-1 text-sm text-muted-foreground">
+                        {book.genre && <p>Genre: {book.genre}</p>}
+                        {book.pages && <p>Pages: {book.pages}</p>}
+                        {book.publisher && <p>Publisher: {book.publisher}</p>}
+                        {book.language && <p>Language: {book.language}</p>}
+                        {book.isbn && <p>ISBN: {book.isbn}</p>}
+                      </div>
                       <div className="mt-auto flex gap-2 pt-2">
                         <Button
                           variant={favourites.includes(book.id) ? 'destructive' : 'outline'}
