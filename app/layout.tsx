@@ -41,46 +41,44 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider>
           <SidebarProvider>
-            {showSidebar ? (
-              <div className="flex min-h-screen w-full flex-col md:flex-row">
-                <Sidebar>
-                  <nav className="flex flex-col space-y-2 p-4">
-                    <Button asChild variant="ghost" className="justify-start">
-                      <Link href="/">
-                        <BookIcon className="mr-2" /> Home
-                      </Link>
-                    </Button>
-                    <Button asChild variant="ghost" className="justify-start">
-                      <Link href="#">
-                        <UsersIcon className="mr-2" /> Authors
-                      </Link>
-                    </Button>
-                    <Button asChild variant="ghost" className="justify-start">
-                      <Link href="#">
-                        <InfoIcon className="mr-2" /> About
-                      </Link>
-                    </Button>
-                    <Separator className="my-2" />
-                    <Button asChild variant="ghost" className="justify-start">
-                      <Link href="#">
-                        <SettingsIcon className="mr-2" /> Settings
-                      </Link>
-                    </Button>
-                  </nav>
-                </Sidebar>
-                <SidebarInset>
-                  <div className="flex min-h-screen w-full flex-1 flex-col">
-                    {children}
-                    <Footer />
-                  </div>
-                </SidebarInset>
-              </div>
-            ) : (
-              <div className="flex min-h-screen w-full flex-col">
-                {children}
-                <Footer />
-              </div>
-            )}
+            <div className="flex min-h-screen w-full flex-col md:flex-row">
+              <Sidebar>
+                <nav className="flex flex-col space-y-2 p-4">
+                  <Button asChild variant="ghost" className="justify-start">
+                    <Link href="/">
+                      <BookIcon className="mr-2" /> Home
+                    </Link>
+                  </Button>
+                  <Button asChild variant="ghost" className="justify-start">
+                    <Link href="/favourites">
+                      <BookIcon className="mr-2" /> Favourites
+                    </Link>
+                  </Button>
+                  <Button asChild variant="ghost" className="justify-start">
+                    <Link href="#">
+                      <UsersIcon className="mr-2" /> Authors
+                    </Link>
+                  </Button>
+                  <Button asChild variant="ghost" className="justify-start">
+                    <Link href="#">
+                      <InfoIcon className="mr-2" /> About
+                    </Link>
+                  </Button>
+                  <Separator className="my-2" />
+                  <Button asChild variant="ghost" className="justify-start">
+                    <Link href="#">
+                      <SettingsIcon className="mr-2" /> Settings
+                    </Link>
+                  </Button>
+                </nav>
+              </Sidebar>
+              <SidebarInset>
+                <div className="flex min-h-screen w-full flex-1 flex-col">
+                  {children}
+                  <Footer />
+                </div>
+              </SidebarInset>
+            </div>
           </SidebarProvider>
         </ThemeProvider>
       </body>

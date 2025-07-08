@@ -5,12 +5,23 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Toaster } from "@/components/ui/sonner"
+import { toast } from "sonner"
 import type { Book } from "@/lib/bookSearch"
 
 export default function Home() {
   const [query, setQuery] = React.useState("")
   const [books, setBooks] = React.useState<Book[] | null>(null)
   const [loading, setLoading] = React.useState(false)
+
+  async function handleAdd(book: Book) {
+    await fetch('/api/favourites', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(book)
+    })
+    toast('Added to favourites')
+  }
 
   async function handleSearch(e: React.FormEvent) {
     e.preventDefault()
@@ -28,6 +39,7 @@ export default function Home() {
   }
 
   return (
+    <>
     <div
       className={`flex min-h-screen flex-col items-center p-8 ${
         books ? "pt-12" : "justify-center"
@@ -81,10 +93,17 @@ export default function Home() {
                   <Badge variant="outline">Rating: {book.rating.toFixed(1)}</Badge>
                 </CardContent>
               )}
+              <CardContent>
+                <Button variant="outline" onClick={() => handleAdd(book)}>
+                  Add to favourites
+                </Button>
+              </CardContent>
             </Card>
           ))}
         </div>
       )}
     </div>
+    <Toaster />
+    </>
   )
 }

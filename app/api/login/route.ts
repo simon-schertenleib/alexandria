@@ -10,6 +10,10 @@ export async function POST(request: NextRequest) {
       httpOnly: true,
       path: '/',
     })
+    response.cookies.set('username', username, {
+      httpOnly: true,
+      path: '/',
+    })
     return response
   }
   return NextResponse.json({ success: false }, { status: 401 })
