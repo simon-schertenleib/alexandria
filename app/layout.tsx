@@ -52,6 +52,11 @@ export default function RootLayout({
                     </Link>
                   </Button>
                   <Button asChild variant="ghost" className="justify-start">
+                    <Link href="/favourites">
+                      <BookIcon className="mr-2" /> Favourites
+                    </Link>
+                  </Button>
+                  <Button asChild variant="ghost" className="justify-start">
                     <Link href="#">
                       <UsersIcon className="mr-2" /> Authors
                     </Link>
