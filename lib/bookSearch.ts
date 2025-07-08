@@ -2,6 +2,8 @@ export interface Book {
   title: string;
   author?: string;
   year?: number;
+  description?: string;
+  rating?: number;
 }
 
 /**
@@ -11,9 +13,54 @@ export interface Book {
 export async function searchBooks(query: string): Promise<Book[]> {
   // TODO: replace with real HTTP call to a third-party API
   const sample: Book[] = [
-    { title: "The Great Gatsby", author: "F. Scott Fitzgerald", year: 1925 },
-    { title: "Pride and Prejudice", author: "Jane Austen", year: 1813 },
-    { title: "To Kill a Mockingbird", author: "Harper Lee", year: 1960 },
+    {
+      title: "The Great Gatsby",
+      author: "F. Scott Fitzgerald",
+      year: 1925,
+      description:
+        "A story of the mysteriously wealthy Jay Gatsby and his love for Daisy Buchanan during the Roaring Twenties.",
+      rating: 4.4,
+    },
+    {
+      title: "Pride and Prejudice",
+      author: "Jane Austen",
+      year: 1813,
+      description:
+        "A romantic novel that charts the emotional development of Elizabeth Bennet, who learns about the repercussions of hasty judgments.",
+      rating: 4.6,
+    },
+    {
+      title: "To Kill a Mockingbird",
+      author: "Harper Lee",
+      year: 1960,
+      description:
+        "A novel about the serious issues of rape and racial inequality told through the eyes of a young girl in the Deep South.",
+      rating: 4.8,
+    },
+    {
+      title: "1984",
+      author: "George Orwell",
+      year: 1949,
+      description:
+        "A dystopian social science fiction novel and cautionary tale about the dangers of totalitarianism.",
+      rating: 4.7,
+    },
+    {
+      title: "Moby Dick",
+      author: "Herman Melville",
+      year: 1851,
+      description:
+        "The narrative of Captain Ahab's obsessive quest to seek revenge on the white whale that bit off his leg.",
+      rating: 4.2,
+    },
+    {
+      title: "War and Peace",
+      author: "Leo Tolstoy",
+      year: 1869,
+      description:
+        "An epic novel that intertwines the lives of private and public individuals during the time of the Napoleonic wars.",
+      rating: 4.5,
+    },
   ];
 
   // Pretend we filtered by the query

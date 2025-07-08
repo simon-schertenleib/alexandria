@@ -2,6 +2,9 @@
 import React from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Alert, AlertDescription } from "@/components/ui/alert"
 import type { Book } from "@/lib/bookSearch"
 
 export default function Home() {
@@ -30,7 +33,8 @@ export default function Home() {
         books ? "pt-12" : "justify-center"
       }`}
     >
-      <form onSubmit={handleSearch} className="w-full max-w-md mb-8">
+      <h1 className="mb-6 text-3xl font-semibold">Book Search</h1>
+      <form onSubmit={handleSearch} className="w-full max-w-md mb-8 space-y-2">
         <div className="flex gap-2">
           <Input
             placeholder="Search books..."
@@ -44,18 +48,40 @@ export default function Home() {
         </div>
       </form>
       {books && (
-        <div className="w-full max-w-md space-y-4">
-          {books.length === 0 && <p>No results found.</p>}
+        <div className="w-full max-w-xl space-y-4">
+          {books.length === 0 && (
+            <Alert>
+              <AlertDescription>No results found.</AlertDescription>
+            </Alert>
+          )}
           {books.map((book, idx) => (
-            <div key={idx} className="border rounded-md p-4">
-              <p className="font-semibold">{book.title}</p>
-              {book.author && (
-                <p className="text-sm text-muted-foreground">{book.author}</p>
+            <Card key={idx}>
+              <CardHeader>
+                <CardTitle className="flex items-center justify-between">
+                  {book.title}
+                  {book.year && (
+                    <Badge variant="secondary" className="ml-2">
+                      {book.year}
+                    </Badge>
+                  )}
+                </CardTitle>
+                {book.author && (
+                  <CardDescription>{book.author}</CardDescription>
+                )}
+              </CardHeader>
+              {book.description && (
+                <CardContent className="pt-0">
+                  <p className="text-sm text-muted-foreground">
+                    {book.description}
+                  </p>
+                </CardContent>
               )}
-              {book.year && (
-                <p className="text-sm text-muted-foreground">{book.year}</p>
+              {book.rating && (
+                <CardContent className="pt-2">
+                  <Badge variant="outline">Rating: {book.rating.toFixed(1)}</Badge>
+                </CardContent>
               )}
-            </div>
+            </Card>
           ))}
         </div>
       )}
