@@ -10,6 +10,7 @@ export interface Book {
   publisher?: string
   language?: string
   isbn?: string
+  cover_i?: number
 }
 
 interface OpenLibraryDoc {
@@ -142,6 +143,10 @@ export async function searchBooks(query: string): Promise<Book[]> {
       const book: Book = {
         id: idMatch ? Number(idMatch[0]) : idx,
         title: doc.title ?? 'Unknown',
+      }
+
+      if (typeof doc.cover_i === 'number') {
+        book.cover_i = doc.cover_i
       }
 
       if (Array.isArray(doc.author_name) && doc.author_name.length > 0) {

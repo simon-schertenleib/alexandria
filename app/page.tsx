@@ -11,6 +11,8 @@ import { toast } from "sonner"
 import type { Book } from "@/lib/bookSearch"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
+import { AspectRatio } from "@/components/ui/aspect-ratio"
+import Image from "next/image"
 
 export default function Home() {
   const router = useRouter()
@@ -120,6 +122,18 @@ export default function Home() {
                   <CardDescription>{book.author}</CardDescription>
                 )}
               </CardHeader>
+              {typeof book.cover_i === 'number' && (
+                <CardContent className="pt-0">
+                  <AspectRatio ratio={16 / 9} className="bg-muted">
+                    <Image
+                      src={`https://covers.openlibrary.org/b/id/${book.cover_i}.jpg`}
+                      alt="Book cover"
+                      fill
+                      className="rounded-md object-cover"
+                    />
+                  </AspectRatio>
+                </CardContent>
+              )}
               {book.description && (
                 <CardContent className="pt-0">
                   <p className="text-sm text-muted-foreground">
