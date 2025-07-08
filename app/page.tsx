@@ -81,7 +81,7 @@ export default function Home() {
   return (
     <>
       <div className="flex min-h-screen flex-col items-center p-8 pt-12">
-        <h1 className="mb-6 text-3xl font-semibold">Book Search</h1>
+        <h1 className="mb-6 text-3xl font-semibold">Alexandria</h1>
         <form
           onSubmit={handleSearch}
           className={`w-full max-w-md mb-8 space-y-2 transition-transform duration-300 ease-out ${books === null && !loading ? "translate-y-[40vh]" : ""
@@ -89,7 +89,7 @@ export default function Home() {
         >
           <div className="flex gap-2">
             <Input
-              placeholder="Search books..."
+              placeholder="Search..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               className="flex-1"
