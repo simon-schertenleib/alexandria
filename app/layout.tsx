@@ -43,7 +43,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider>
           <SidebarProvider>
-            <div className="flex min-h-screen flex-col md:flex-row">
+            <div className="flex min-h-screen w-full flex-col md:flex-row">
               <Sidebar>
                 <nav className="flex flex-col space-y-2 p-4">
                   <Button asChild variant="ghost" className="justify-start">
@@ -70,7 +70,7 @@ export default function RootLayout({
                 </nav>
               </Sidebar>
               <SidebarInset>
-                <div className="flex min-h-screen flex-col">
+                <div className="flex min-h-screen w-full flex-1 flex-col">
                   {children}
                   <Footer />
                 </div>
