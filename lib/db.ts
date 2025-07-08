@@ -15,6 +15,11 @@ CREATE TABLE IF NOT EXISTS favourites (
   year INTEGER,
   description TEXT,
   rating REAL,
+  genre TEXT,
+  pages INTEGER,
+  publisher TEXT,
+  language TEXT,
+  isbn TEXT,
   UNIQUE(username, book_id)
 )`
 
@@ -22,7 +27,20 @@ db.exec(init)
 
 export function addFavourite(username: string, book: Book) {
   const stmt = db.prepare(
-    `INSERT OR IGNORE INTO favourites (username, book_id, title, author, year, description, rating) VALUES (?, ?, ?, ?, ?, ?, ?)`
+    `INSERT OR IGNORE INTO favourites (
+      username,
+      book_id,
+      title,
+      author,
+      year,
+      description,
+      rating,
+      genre,
+      pages,
+      publisher,
+      language,
+      isbn
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
   )
   stmt.run(
     username,
@@ -31,7 +49,12 @@ export function addFavourite(username: string, book: Book) {
     book.author ?? null,
     book.year ?? null,
     book.description ?? null,
-    book.rating ?? null
+    book.rating ?? null,
+    book.genre ?? null,
+    book.pages ?? null,
+    book.publisher ?? null,
+    book.language ?? null,
+    book.isbn ?? null
   )
 }
 
@@ -44,7 +67,19 @@ export function removeFavourite(username: string, bookId: number) {
 
 export function getFavourites(username: string): Book[] {
   const stmt = db.prepare(
-    `SELECT book_id as id, title, author, year, description, rating FROM favourites WHERE username = ?`
+    `SELECT
+      book_id as id,
+      title,
+      author,
+      year,
+      description,
+      rating,
+      genre,
+      pages,
+      publisher,
+      language,
+      isbn
+    FROM favourites WHERE username = ?`
   )
   return stmt.all(username) as Book[]
 }

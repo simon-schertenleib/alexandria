@@ -5,6 +5,11 @@ export interface Book {
   year?: number
   description?: string
   rating?: number
+  genre?: string
+  pages?: number
+  publisher?: string
+  language?: string
+  isbn?: string
 }
 
 /**
@@ -20,6 +25,11 @@ export const books: Book[] = [
     description:
       "A story of the mysteriously wealthy Jay Gatsby and his love for Daisy Buchanan during the Roaring Twenties.",
     rating: 4.4,
+    genre: "Novel",
+    pages: 218,
+    publisher: "Charles Scribner's Sons",
+    language: "English",
+    isbn: "9780743273565",
   },
   {
     id: 2,
@@ -29,6 +39,11 @@ export const books: Book[] = [
     description:
       "A romantic novel that charts the emotional development of Elizabeth Bennet, who learns about the repercussions of hasty judgments.",
     rating: 4.6,
+    genre: "Romance",
+    pages: 279,
+    publisher: "T. Egerton, Whitehall",
+    language: "English",
+    isbn: "9780199535569",
   },
   {
     id: 3,
@@ -38,6 +53,11 @@ export const books: Book[] = [
     description:
       "A novel about the serious issues of rape and racial inequality told through the eyes of a young girl in the Deep South.",
     rating: 4.8,
+    genre: "Southern Gothic",
+    pages: 281,
+    publisher: "J.B. Lippincott & Co.",
+    language: "English",
+    isbn: "9780061120084",
   },
   {
     id: 4,
@@ -47,6 +67,11 @@ export const books: Book[] = [
     description:
       "A dystopian social science fiction novel and cautionary tale about the dangers of totalitarianism.",
     rating: 4.7,
+    genre: "Dystopian",
+    pages: 328,
+    publisher: "Secker & Warburg",
+    language: "English",
+    isbn: "9780451524935",
   },
   {
     id: 5,
@@ -56,6 +81,11 @@ export const books: Book[] = [
     description:
       "The narrative of Captain Ahab's obsessive quest to seek revenge on the white whale that bit off his leg.",
     rating: 4.2,
+    genre: "Adventure",
+    pages: 585,
+    publisher: "Harper & Brothers",
+    language: "English",
+    isbn: "9781503280786",
   },
   {
     id: 6,
@@ -65,6 +95,11 @@ export const books: Book[] = [
     description:
       "An epic novel that intertwines the lives of private and public individuals during the time of the Napoleonic wars.",
     rating: 4.5,
+    genre: "Historical",
+    pages: 1225,
+    publisher: "The Russian Messenger",
+    language: "Russian",
+    isbn: "9780199232765",
   },
 ]
 
