@@ -4,18 +4,10 @@ import BackButton from '@/components/BackButton'
 import {
   Card,
   CardContent,
-  CardHeader,
   CardTitle,
   CardDescription,
 } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from '@/components/ui/tabs'
 import {
   Table,
   TableBody,
@@ -60,33 +52,30 @@ export default async function BookPage({ params }: { params: { id: string } }) {
       </Breadcrumb>
       <ScrollArea className="flex-1 p-8">
         <Card className="w-full">
-          <CardHeader>
-            <CardTitle className="flex items-center justify-between">
-              {book.title}
-              {book.year && (
-                <Badge variant="secondary" className="ml-2">
-                  {book.year}
-                </Badge>
-              )}
-            </CardTitle>
-            {book.author && <CardDescription>{book.author}</CardDescription>}
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <AspectRatio ratio={16 / 9} className="bg-muted">
-              <Image
-                src={`https://source.unsplash.com/featured/?book,${book.title}`}
-                alt="Book cover"
-                fill
-                className="rounded-md object-cover"
-              />
-            </AspectRatio>
-            <Tabs defaultValue="summary" className="w-full">
-              <TabsList>
-                <TabsTrigger value="summary">Summary</TabsTrigger>
-                <TabsTrigger value="details">Details</TabsTrigger>
-              </TabsList>
-              <Separator className="my-4" />
-              <TabsContent value="summary" className="space-y-4">
+          <CardContent className="p-6">
+            <div className="flex flex-col gap-8 md:flex-row">
+              <div className="space-y-6 md:w-1/3">
+                <div>
+                  <CardTitle className="flex items-center justify-between">
+                    {book.title}
+                    {book.year && (
+                      <Badge variant="secondary" className="ml-2">
+                        {book.year}
+                      </Badge>
+                    )}
+                  </CardTitle>
+                  {book.author && (
+                    <CardDescription>{book.author}</CardDescription>
+                  )}
+                </div>
+                <AspectRatio ratio={16 / 9} className="bg-muted">
+                  <Image
+                    src={`https://source.unsplash.com/featured/?book,${book.title}`}
+                    alt="Book cover"
+                    fill
+                    className="rounded-md object-cover"
+                  />
+                </AspectRatio>
                 {book.description && (
                   <p className="text-sm text-muted-foreground">
                     {book.description}
@@ -105,8 +94,8 @@ export default async function BookPage({ params }: { params: { id: string } }) {
                     <Progress value={(book.rating / 5) * 100} />
                   </div>
                 )}
-              </TabsContent>
-              <TabsContent value="details">
+              </div>
+              <div className="md:flex-1">
                 <Table>
                   <TableBody>
                     {book.genre && (
@@ -147,8 +136,8 @@ export default async function BookPage({ params }: { params: { id: string } }) {
                     )}
                   </TableBody>
                 </Table>
-              </TabsContent>
-            </Tabs>
+              </div>
+            </div>
           </CardContent>
         </Card>
       </ScrollArea>
