@@ -8,6 +8,14 @@ import {
   SidebarInset,
 } from "@/components/ui/sidebar";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import {
+  BookIcon,
+  UsersIcon,
+  InfoIcon,
+  SettingsIcon,
+} from "lucide-react";
 import { Footer } from "@/components/ui/footer";
 
 const geistSans = Geist({
@@ -38,15 +46,27 @@ export default function RootLayout({
             <div className="flex min-h-screen flex-col md:flex-row">
               <Sidebar>
                 <nav className="flex flex-col space-y-2 p-4">
-                  <Link href="/" className="hover:underline">
-                    Home
-                  </Link>
-                  <Link href="#" className="hover:underline">
-                    About
-                  </Link>
-                  <Link href="#" className="hover:underline">
-                    Contact
-                  </Link>
+                  <Button asChild variant="ghost" className="justify-start">
+                    <Link href="/">
+                      <BookIcon className="mr-2" /> Home
+                    </Link>
+                  </Button>
+                  <Button asChild variant="ghost" className="justify-start">
+                    <Link href="#">
+                      <UsersIcon className="mr-2" /> Authors
+                    </Link>
+                  </Button>
+                  <Button asChild variant="ghost" className="justify-start">
+                    <Link href="#">
+                      <InfoIcon className="mr-2" /> About
+                    </Link>
+                  </Button>
+                  <Separator className="my-2" />
+                  <Button asChild variant="ghost" className="justify-start">
+                    <Link href="#">
+                      <SettingsIcon className="mr-2" /> Settings
+                    </Link>
+                  </Button>
                 </nav>
               </Sidebar>
               <SidebarInset>
