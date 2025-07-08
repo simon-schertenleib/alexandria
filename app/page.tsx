@@ -17,6 +17,7 @@ export default function Home() {
   const [query, setQuery] = React.useState("")
   const [books, setBooks] = React.useState<Book[] | null>(null)
   const [loading, setLoading] = React.useState(false)
+  const [favourites, setFavourites] = React.useState<number[]>([])
 
   React.useEffect(() => {
     const q = searchParams.get('q')
@@ -36,12 +37,25 @@ export default function Home() {
     }
   }, [searchParams])
 
+  React.useEffect(() => {
+    fetch('/api/favourites')
+      .then((res) => res.json())
+      .then((data) => {
+        const ids = (data.favourites as Book[]).map((b) => b.id)
+        setFavourites(ids)
+      })
+      .catch((err) => console.error(err))
+  }, [])
+
   async function handleAdd(book: Book) {
     await fetch('/api/favourites', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(book)
     })
+    setFavourites((prev) =>
+      prev.includes(book.id) ? prev : [...prev, book.id]
+    )
     toast('Added to favourites')
   }
 
@@ -106,8 +120,14 @@ export default function Home() {
                 </CardContent>
               )}
               <CardContent className="flex gap-2">
-                <Button variant="outline" onClick={() => handleAdd(book)}>
-                  Add to favourites
+                <Button
+                  variant="outline"
+                  disabled={favourites.includes(book.id)}
+                  onClick={() => handleAdd(book)}
+                >
+                  {favourites.includes(book.id)
+                    ? 'Favourited'
+                    : 'Add to favourites'}
                 </Button>
                 <Button asChild variant="ghost">
                   <Link href={`/book/${book.id}`}>View details</Link>
