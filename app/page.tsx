@@ -110,7 +110,7 @@ export default function Home() {
           {books.map((book, idx) => {
             const imageUrl = typeof book.cover_i === 'number'
               ? `https://covers.openlibrary.org/b/id/${book.cover_i}.jpg`
-              : 'https://openlibrary.org/static/images/icons/avatar_book-sm.png'
+              : 'https://covers.openlibrary.org/static/images/icons/avatar_book-sm.png'
 
             return (
               <Card key={idx} className="flex gap-4">
