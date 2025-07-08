@@ -8,6 +8,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Toaster } from "@/components/ui/sonner"
 import { toast } from "sonner"
 import type { Book } from "@/lib/bookSearch"
+import Link from "next/link"
 
 export default function Home() {
   const [query, setQuery] = React.useState("")
@@ -93,9 +94,12 @@ export default function Home() {
                   <Badge variant="outline">Rating: {book.rating.toFixed(1)}</Badge>
                 </CardContent>
               )}
-              <CardContent>
+              <CardContent className="flex gap-2">
                 <Button variant="outline" onClick={() => handleAdd(book)}>
                   Add to favourites
+                </Button>
+                <Button asChild variant="ghost">
+                  <Link href={`/book/${book.id}`}>View details</Link>
                 </Button>
               </CardContent>
             </Card>
