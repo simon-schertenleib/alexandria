@@ -8,6 +8,7 @@ import {
   SidebarInset,
 } from "@/components/ui/sidebar";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Footer } from "@/components/ui/footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -48,7 +49,12 @@ export default function RootLayout({
                   </Link>
                 </nav>
               </Sidebar>
-              <SidebarInset>{children}</SidebarInset>
+              <SidebarInset>
+                <div className="flex min-h-screen flex-col">
+                  {children}
+                  <Footer />
+                </div>
+              </SidebarInset>
             </div>
           </SidebarProvider>
         </ThemeProvider>
