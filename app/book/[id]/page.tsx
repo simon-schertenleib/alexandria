@@ -74,7 +74,7 @@ export default async function BookPage({ params }: { params: { id: string } }) {
           <CardContent className="space-y-6">
             <AspectRatio ratio={16 / 9} className="bg-muted">
               <Image
-                src={`https://source.unsplash.com/featured/?book,${book.title}`}
+                src={`https://thumbs.dreamstime.com/b/flying-magic-books-library-367534733.jpg`}
                 alt="Book cover"
                 fill
                 className="rounded-md object-cover"
