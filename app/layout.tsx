@@ -16,6 +16,7 @@ import {
   InfoIcon,
   SettingsIcon,
 } from "lucide-react";
+import { Footer } from "@/components/ui/footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -68,7 +69,12 @@ export default function RootLayout({
                   </Button>
                 </nav>
               </Sidebar>
-              <SidebarInset>{children}</SidebarInset>
+              <SidebarInset>
+                <div className="flex min-h-screen flex-col">
+                  {children}
+                  <Footer />
+                </div>
+              </SidebarInset>
             </div>
           </SidebarProvider>
         </ThemeProvider>
