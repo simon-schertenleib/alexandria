@@ -51,95 +51,95 @@ export default async function BookPage({ params }: { params: { id: string } }) {
         </BreadcrumbList>
       </Breadcrumb>
       <ScrollArea className="flex-1 p-8">
-        <Card className="w-full">
-          <CardContent className="p-6">
-            <div className="flex flex-col gap-8 md:flex-row">
-              <div className="space-y-6 md:w-1/3">
-                <div>
-                  <CardTitle className="flex items-center justify-between">
-                    {book.title}
-                    {book.year && (
-                      <Badge variant="secondary" className="ml-2">
-                        {book.year}
-                      </Badge>
-                    )}
-                  </CardTitle>
-                  {book.author && (
-                    <CardDescription>{book.author}</CardDescription>
+        <div className="flex flex-col gap-8 md:flex-row">
+          <Card className="md:w-1/3">
+            <CardContent className="p-6 space-y-6">
+              <div>
+                <CardTitle className="flex items-center justify-between">
+                  {book.title}
+                  {book.year && (
+                    <Badge variant="secondary" className="ml-2">
+                      {book.year}
+                    </Badge>
                   )}
+                </CardTitle>
+                {book.author && (
+                  <CardDescription>{book.author}</CardDescription>
+                )}
+              </div>
+              <AspectRatio ratio={16 / 9} className="bg-muted">
+                <Image
+                  src={`https://thumbs.dreamstime.com/b/flying-magic-books-library-367534733.jpg`}
+                  alt="Book cover"
+                  fill
+                  className="rounded-md object-cover"
+                />
+              </AspectRatio>
+              {book.description && (
+                <p className="text-sm text-muted-foreground">
+                  {book.description}
+                </p>
+              )}
+              {book.rating && (
+                <div className="space-y-2">
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Badge variant="outline">
+                        Rating: {book.rating.toFixed(1)}
+                      </Badge>
+                    </TooltipTrigger>
+                    <TooltipContent>Out of 5</TooltipContent>
+                  </Tooltip>
+                  <Progress value={(book.rating / 5) * 100} />
                 </div>
-                <AspectRatio ratio={16 / 9} className="bg-muted">
-                  <Image
-                    src={`https://thumbs.dreamstime.com/b/flying-magic-books-library-367534733.jpg`}
-                    alt="Book cover"
-                    fill
-                    className="rounded-md object-cover"
-                  />
-                </AspectRatio>
-                {book.description && (
-                  <p className="text-sm text-muted-foreground">
-                    {book.description}
-                  </p>
-                )}
-                {book.rating && (
-                  <div className="space-y-2">
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Badge variant="outline">
-                          Rating: {book.rating.toFixed(1)}
-                        </Badge>
-                      </TooltipTrigger>
-                      <TooltipContent>Out of 5</TooltipContent>
-                    </Tooltip>
-                    <Progress value={(book.rating / 5) * 100} />
-                  </div>
-                )}
-              </div>
-              <div className="md:flex-1">
-                <Table>
-                  <TableBody>
-                    {book.genre && (
-                      <TableRow>
-                        <TableHead>Genre</TableHead>
-                        <TableCell>{book.genre}</TableCell>
-                      </TableRow>
-                    )}
-                    {book.pages && (
-                      <TableRow>
-                        <TableHead>Pages</TableHead>
-                        <TableCell>{book.pages}</TableCell>
-                      </TableRow>
-                    )}
-                    {book.publisher && (
-                      <TableRow>
-                        <TableHead>Publisher</TableHead>
-                        <TableCell>{book.publisher}</TableCell>
-                      </TableRow>
-                    )}
-                    {book.language && (
-                      <TableRow>
-                        <TableHead>Language</TableHead>
-                        <TableCell>{book.language}</TableCell>
-                      </TableRow>
-                    )}
-                    {book.isbn && (
-                      <TableRow>
-                        <TableHead>ISBN</TableHead>
-                        <TableCell>{book.isbn}</TableCell>
-                      </TableRow>
-                    )}
-                    {book.year && (
-                      <TableRow>
-                        <TableHead>Year</TableHead>
-                        <TableCell>{book.year}</TableCell>
-                      </TableRow>
-                    )}
-                  </TableBody>
-                </Table>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+              )}
+            </CardContent>
+          </Card>
+          <Card className="md:flex-1">
+            <CardContent className="p-6">
+              <Table>
+                <TableBody>
+                  {book.genre && (
+                    <TableRow>
+                      <TableHead>Genre</TableHead>
+                      <TableCell>{book.genre}</TableCell>
+                    </TableRow>
+                  )}
+                  {book.pages && (
+                    <TableRow>
+                      <TableHead>Pages</TableHead>
+                      <TableCell>{book.pages}</TableCell>
+                    </TableRow>
+                  )}
+                  {book.publisher && (
+                    <TableRow>
+                      <TableHead>Publisher</TableHead>
+                      <TableCell>{book.publisher}</TableCell>
+                    </TableRow>
+                  )}
+                  {book.language && (
+                    <TableRow>
+                      <TableHead>Language</TableHead>
+                      <TableCell>{book.language}</TableCell>
+                    </TableRow>
+                  )}
+                  {book.isbn && (
+                    <TableRow>
+                      <TableHead>ISBN</TableHead>
+                      <TableCell>{book.isbn}</TableCell>
+                    </TableRow>
+                  )}
+                  {book.year && (
+                    <TableRow>
+                      <TableHead>Year</TableHead>
+                      <TableCell>{book.year}</TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+        </div>
       </ScrollArea>
     </div>
   )
