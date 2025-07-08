@@ -1,5 +1,6 @@
 import { getBook } from '@/lib/bookSearch'
 import { notFound } from 'next/navigation'
+import BackButton from '@/components/BackButton'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 
@@ -7,7 +8,8 @@ export default async function BookPage({ params }: { params: { id: string } }) {
   const book = await getBook(Number(params.id))
   if (!book) return notFound()
   return (
-    <div className="flex min-h-screen flex-col items-center p-8 pt-12">
+    <div className="relative flex min-h-screen flex-col items-center p-8 pt-12">
+      <BackButton className="absolute left-4 top-4" />
       <Card className="w-full max-w-xl">
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
