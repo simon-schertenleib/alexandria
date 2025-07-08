@@ -9,11 +9,32 @@ import { Toaster } from "@/components/ui/sonner"
 import { toast } from "sonner"
 import type { Book } from "@/lib/bookSearch"
 import Link from "next/link"
+import { useRouter, useSearchParams } from "next/navigation"
 
 export default function Home() {
+  const router = useRouter()
+  const searchParams = useSearchParams()
   const [query, setQuery] = React.useState("")
   const [books, setBooks] = React.useState<Book[] | null>(null)
   const [loading, setLoading] = React.useState(false)
+
+  React.useEffect(() => {
+    const q = searchParams.get('q')
+    if (q !== null) {
+      setQuery(q)
+      setLoading(true)
+      fetch(`/api/books/search?q=${encodeURIComponent(q)}`)
+        .then((res) => res.json())
+        .then((data) => setBooks(data.books))
+        .catch((err) => {
+          console.error(err)
+          setBooks([])
+        })
+        .finally(() => setLoading(false))
+    } else {
+      setBooks(null)
+    }
+  }, [searchParams])
 
   async function handleAdd(book: Book) {
     await fetch('/api/favourites', {
@@ -26,17 +47,7 @@ export default function Home() {
 
   async function handleSearch(e: React.FormEvent) {
     e.preventDefault()
-    setLoading(true)
-    try {
-      const res = await fetch(`/api/books/search?q=${encodeURIComponent(query)}`)
-      const data = await res.json()
-      setBooks(data.books)
-    } catch (err) {
-      console.error(err)
-      setBooks([])
-    } finally {
-      setLoading(false)
-    }
+    router.push(`/?q=${encodeURIComponent(query)}`)
   }
 
   return (
