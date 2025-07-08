@@ -3,7 +3,7 @@ import React from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Loader2 } from "lucide-react"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Card, CardContent, CardTitle, CardDescription } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Toaster } from "@/components/ui/sonner"
@@ -113,8 +113,8 @@ export default function Home() {
               : 'https://covers.openlibrary.org/static/images/icons/avatar_book-sm.png'
 
             return (
-              <Card key={idx} className="flex gap-4">
-                <div className="pl-6">
+              <div key={idx} className="flex gap-4">
+                <div className="pl-6 py-6">
                   <AspectRatio ratio={16 / 9} className="w-32 bg-muted">
                     <Image
                       src={imageUrl}
@@ -124,7 +124,8 @@ export default function Home() {
                     />
                   </AspectRatio>
                 </div>
-                <div className="flex flex-1 flex-col gap-2 pr-6">
+                <Card className="flex-1">
+                  <CardContent className="flex flex-col gap-2 pl-0 pr-6">
                   <div className="flex items-start justify-between">
                     <div>
                       <CardTitle>{book.title}</CardTitle>
@@ -163,8 +164,9 @@ export default function Home() {
                       <Link href={`/book/${book.id}`}>View details</Link>
                     </Button>
                   </div>
-                </div>
+                </CardContent>
               </Card>
+              </div>
             )
           })}
         </div>
