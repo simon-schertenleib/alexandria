@@ -81,7 +81,7 @@ export default function Home() {
       <h1 className="mb-6 text-3xl font-semibold">Book Search</h1>
       <form
         onSubmit={handleSearch}
-        className={`w-full max-w-md mb-8 space-y-2 transition-transform duration-500 ${
+        className={`w-full max-w-md mb-8 space-y-2 transition-transform duration-300 ease-out ${
           books === null && !loading ? "translate-y-[40vh]" : ""
         }`}
       >
@@ -99,7 +99,7 @@ export default function Home() {
         </div>
       </form>
       {books && (
-        <div className="w-full max-w-xl space-y-4 animate-in fade-in">
+        <div className="w-full max-w-xl space-y-4 animate-in fade-in duration-300 ease-in">
           {books.length === 0 && (
             <Alert>
               <AlertDescription>No results found.</AlertDescription>
