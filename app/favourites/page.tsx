@@ -3,6 +3,10 @@ import React, { useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Button } from '@/components/ui/button'
+import { Toaster } from '@/components/ui/sonner'
+import { toast } from 'sonner'
+import Link from 'next/link'
 import type { Book } from '@/lib/bookSearch'
 
 export default function FavouritesPage() {
@@ -17,7 +21,18 @@ export default function FavouritesPage() {
     fetchFavourites()
   }, [])
 
+  async function handleRemove(id: number) {
+    await fetch('/api/favourites', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id })
+    })
+    setBooks((prev) => prev ? prev.filter((b) => b.id !== id) : prev)
+    toast('Removed from favourites')
+  }
+
   return (
+    <>
     <div className="flex min-h-screen flex-col items-center p-8 pt-12">
       <h1 className="mb-6 text-3xl font-semibold">Favourites</h1>
       {books && (
@@ -54,10 +69,20 @@ export default function FavouritesPage() {
                   <Badge variant="outline">Rating: {book.rating.toFixed(1)}</Badge>
                 </CardContent>
               )}
+              <CardContent className="flex gap-2">
+                <Button variant="destructive" onClick={() => handleRemove(book.id)}>
+                  Remove
+                </Button>
+                <Button asChild variant="ghost">
+                  <Link href={`/book/${book.id}`}>View details</Link>
+                </Button>
+              </CardContent>
             </Card>
           ))}
         </div>
       )}
     </div>
+    <Toaster />
+    </>
   )
 }
