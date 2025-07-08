@@ -107,64 +107,66 @@ export default function Home() {
               <AlertDescription>No results found.</AlertDescription>
             </Alert>
           )}
-          {books.map((book, idx) => (
-            <Card key={idx}>
-              <CardHeader>
-                <CardTitle className="flex items-center justify-between">
-                  {book.title}
-                  {book.year && (
-                    <Badge variant="secondary" className="ml-2">
-                      {book.year}
-                    </Badge>
-                  )}
-                </CardTitle>
-                {book.author && (
-                  <CardDescription>{book.author}</CardDescription>
-                )}
-              </CardHeader>
-              {typeof book.cover_i === 'number' && (
-                <CardContent className="pt-0">
-                  <AspectRatio ratio={16 / 9} className="bg-muted">
+          {books.map((book, idx) => {
+            const imageUrl = typeof book.cover_i === 'number'
+              ? `https://covers.openlibrary.org/b/id/${book.cover_i}.jpg`
+              : 'https://openlibrary.org/static/images/icons/avatar_book-sm.png'
+
+            return (
+              <Card key={idx} className="flex gap-4">
+                <div className="pl-6">
+                  <AspectRatio ratio={16 / 9} className="w-32 bg-muted">
                     <Image
-                      src={`https://covers.openlibrary.org/b/id/${book.cover_i}.jpg`}
+                      src={imageUrl}
                       alt="Book cover"
                       fill
                       className="rounded-md object-cover"
                     />
                   </AspectRatio>
-                </CardContent>
-              )}
-              {book.description && (
-                <CardContent className="pt-0">
-                  <p className="text-sm text-muted-foreground">
-                    {book.description}
-                  </p>
-                </CardContent>
-              )}
-              {book.rating && (
-                <CardContent className="pt-2">
-                  <Badge variant="outline">Rating: {book.rating.toFixed(1)}</Badge>
-                </CardContent>
-              )}
-              <CardContent className="flex gap-2">
-                <Button
-                  variant={favourites.includes(book.id) ? 'destructive' : 'outline'}
-                  onClick={() =>
-                    favourites.includes(book.id)
-                      ? handleRemove(book.id)
-                      : handleAdd(book)
-                  }
-                >
-                  {favourites.includes(book.id)
-                    ? 'Remove from favourites'
-                    : 'Add to favourites'}
-                </Button>
-                <Button asChild variant="ghost">
-                  <Link href={`/book/${book.id}`}>View details</Link>
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
+                </div>
+                <div className="flex flex-1 flex-col gap-2 pr-6">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <CardTitle>{book.title}</CardTitle>
+                      {book.author && (
+                        <CardDescription>{book.author}</CardDescription>
+                      )}
+                    </div>
+                    {book.year && (
+                      <Badge variant="secondary" className="ml-2 h-fit">
+                        {book.year}
+                      </Badge>
+                    )}
+                  </div>
+                  {book.description && (
+                    <p className="text-sm text-muted-foreground">
+                      {book.description}
+                    </p>
+                  )}
+                  {book.rating && (
+                    <Badge variant="outline">Rating: {book.rating.toFixed(1)}</Badge>
+                  )}
+                  <div className="mt-auto flex gap-2 pt-2">
+                    <Button
+                      variant={favourites.includes(book.id) ? 'destructive' : 'outline'}
+                      onClick={() =>
+                        favourites.includes(book.id)
+                          ? handleRemove(book.id)
+                          : handleAdd(book)
+                      }
+                    >
+                      {favourites.includes(book.id)
+                        ? 'Remove from favourites'
+                        : 'Add to favourites'}
+                    </Button>
+                    <Button asChild variant="ghost">
+                      <Link href={`/book/${book.id}`}>View details</Link>
+                    </Button>
+                  </div>
+                </div>
+              </Card>
+            )
+          })}
         </div>
       )}
     </div>
