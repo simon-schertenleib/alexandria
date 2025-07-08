@@ -124,7 +124,7 @@ export async function searchBooks(query: string): Promise<Book[]> {
   }
 
   const url =
-    `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=10&fields=*`
+    `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=10&fields=key,title,author_name,first_publish_year,publisher,isbn,language,number_of_pages_median,subject,ratings_average,first_sentence,cover_i`
 
   try {
     const res = await fetch(url)

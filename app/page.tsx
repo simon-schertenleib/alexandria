@@ -74,105 +74,116 @@ export default function Home() {
 
   async function handleSearch(e: React.FormEvent) {
     e.preventDefault()
+    setLoading(true)
     router.push(`/?q=${encodeURIComponent(query)}`)
   }
 
   return (
     <>
-    <div className="flex min-h-screen flex-col items-center p-8 pt-12">
-      <h1 className="mb-6 text-3xl font-semibold">Book Search</h1>
-      <form
-        onSubmit={handleSearch}
-        className={`w-full max-w-md mb-8 space-y-2 transition-transform duration-300 ease-out ${
-          books === null && !loading ? "translate-y-[40vh]" : ""
-        }`}
-      >
-        <div className="flex gap-2">
-          <Input
-            placeholder="Search books..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            className="flex-1"
-          />
-          <Button type="submit" disabled={loading}>
-            {loading && <Loader2 className="size-4 animate-spin" />} 
-            {loading ? "Searching..." : "Search"}
-          </Button>
-        </div>
-      </form>
-      {books && (
-        <div className="w-full max-w-xl space-y-4 animate-in fade-in duration-300 ease-in">
-          {books.length === 0 && (
-            <Alert>
-              <AlertDescription>No results found.</AlertDescription>
-            </Alert>
-          )}
-          {books.map((book, idx) => {
-            const imageUrl = typeof book.cover_i === 'number'
-              ? `https://covers.openlibrary.org/b/id/${book.cover_i}.jpg`
-              : 'https://covers.openlibrary.org/static/images/icons/avatar_book-sm.png'
+      <div className="flex min-h-screen flex-col items-center p-8 pt-12">
+        <h1 className="mb-6 text-3xl font-semibold">Book Search</h1>
+        <form
+          onSubmit={handleSearch}
+          className={`w-full max-w-md mb-8 space-y-2 transition-transform duration-300 ease-out ${books === null && !loading ? "translate-y-[40vh]" : ""
+            }`}
+        >
+          <div className="flex gap-2">
+            <Input
+              placeholder="Search books..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              className="flex-1"
+            />
+            <Button type="submit" disabled={loading}>
+              {loading && <Loader2 className="size-4 animate-spin" />}
+              {loading ? "Searching..." : "Search"}
+            </Button>
+          </div>
+        </form>
+        {loading && (
+          <div className="flex items-center justify-center w-full max-w-md space-y-4 animate-in fade-in duration-300 ease-in pt-10">
+            <Loader2 className="size-24 animate-spin" />
+          </div>
+        )}
+        {(books && !loading) && (
+          <div className="w-full max-w-xl space-y-4 animate-in fade-in duration-300 ease-in">
+            {books.length === 0 && (
+              <Alert>
+                <AlertDescription>No results found.</AlertDescription>
+              </Alert>
+            )}
+            {books.map((book, idx) => {
+              const imageUrl = typeof book.cover_i === 'number'
+                ? `https://covers.openlibrary.org/b/id/${book.cover_i}.jpg`
+                : 'https://covers.openlibrary.org/static/images/icons/avatar_book-sm.png'
 
-            return (
-              <div key={idx} className="flex gap-4">
-                <div className="pl-6 py-6">
-                  <AspectRatio ratio={16 / 9} className="w-32 bg-muted">
+              return (
+                <div key={idx} className="flex gap-2" style={{
+                  height: '182px',
+                }}>
+                  <div className="pl-2 py-2">
                     <Image
                       src={imageUrl}
                       alt="Book cover"
-                      fill
-                      className="rounded-md object-cover"
+                      height={164}
+                      width={110}
+                      // for aspect
+                      style={{ objectFit: 'cover', width: '110px', height: '164px' }}
+                      placeholder="blur"
+                      blurDataURL="https://covers.openlibrary.org/static/images/icons/avatar_book-sm.png"
+                      loading="lazy"
+                      className="rounded-md"
                     />
-                  </AspectRatio>
-                </div>
-                <Card className="flex-1">
-                  <CardContent className="flex flex-col gap-2 pl-0 pr-6">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <CardTitle>{book.title}</CardTitle>
-                      {book.author && (
-                        <CardDescription>{book.author}</CardDescription>
+                  </div>
+                  <Card className="flex-1">
+                    <CardContent className="flex flex-col gap-2 px-4">
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <CardTitle>{book.title}</CardTitle>
+                          {book.author && (
+                            <CardDescription>{book.author}</CardDescription>
+                          )}
+                        </div>
+                        {book.year && (
+                          <Badge variant="secondary" className="ml-2 h-fit">
+                            {book.year}
+                          </Badge>
+                        )}
+                      </div>
+                      {book.description && (
+                        <p className="text-sm text-muted-foreground">
+                          {book.description}
+                        </p>
                       )}
-                    </div>
-                    {book.year && (
-                      <Badge variant="secondary" className="ml-2 h-fit">
-                        {book.year}
-                      </Badge>
-                    )}
-                  </div>
-                  {book.description && (
-                    <p className="text-sm text-muted-foreground">
-                      {book.description}
-                    </p>
-                  )}
-                  {book.rating && (
-                    <Badge variant="outline">Rating: {book.rating.toFixed(1)}</Badge>
-                  )}
-                  <div className="mt-auto flex gap-2 pt-2">
-                    <Button
-                      variant={favourites.includes(book.id) ? 'destructive' : 'outline'}
-                      onClick={() =>
-                        favourites.includes(book.id)
-                          ? handleRemove(book.id)
-                          : handleAdd(book)
-                      }
-                    >
-                      {favourites.includes(book.id)
-                        ? 'Remove from favourites'
-                        : 'Add to favourites'}
-                    </Button>
-                    <Button asChild variant="ghost">
-                      <Link href={`/book/${book.id}`}>View details</Link>
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-              </div>
-            )
-          })}
-        </div>
-      )}
-    </div>
-    <Toaster />
+                      {book.rating && (
+                        <Badge variant="outline">Rating: {book.rating.toFixed(1)}</Badge>
+                      )}
+                      <div className="mt-auto flex gap-2 pt-2">
+                        <Button
+                          variant={favourites.includes(book.id) ? 'destructive' : 'outline'}
+                          onClick={() =>
+                            favourites.includes(book.id)
+                              ? handleRemove(book.id)
+                              : handleAdd(book)
+                          }
+                        >
+                          {favourites.includes(book.id)
+                            ? 'Remove from favourites'
+                            : 'Add to favourites'}
+                        </Button>
+                        <Button asChild variant="ghost">
+                          <Link href={`/book/${book.id}`}>View details</Link>
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              )
+            })}
+          </div>
+        )}
+      </div>
+      <Toaster />
     </>
   )
 }
