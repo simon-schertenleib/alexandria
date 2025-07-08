@@ -60,6 +60,16 @@ export default function Home() {
     toast('Added to favourites')
   }
 
+  async function handleRemove(id: number) {
+    await fetch('/api/favourites', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id })
+    })
+    setFavourites((prev) => prev.filter((f) => f !== id))
+    toast('Removed from favourites')
+  }
+
   async function handleSearch(e: React.FormEvent) {
     e.preventDefault()
     router.push(`/?q=${encodeURIComponent(query)}`)
@@ -124,12 +134,15 @@ export default function Home() {
               )}
               <CardContent className="flex gap-2">
                 <Button
-                  variant="outline"
-                  disabled={favourites.includes(book.id)}
-                  onClick={() => handleAdd(book)}
+                  variant={favourites.includes(book.id) ? 'destructive' : 'outline'}
+                  onClick={() =>
+                    favourites.includes(book.id)
+                      ? handleRemove(book.id)
+                      : handleAdd(book)
+                  }
                 >
                   {favourites.includes(book.id)
-                    ? 'Favourited'
+                    ? 'Remove from favourites'
                     : 'Add to favourites'}
                 </Button>
                 <Button asChild variant="ghost">
