@@ -1,6 +1,6 @@
 import { getBook } from '@/lib/bookSearch'
 import { notFound } from 'next/navigation'
-import BackButton from '@/components/BackButton'
+import BackBreadcrumb from '@/components/BackBreadcrumb'
 import {
   Card,
   CardContent,
@@ -29,7 +29,6 @@ import {
   BreadcrumbList,
   BreadcrumbItem,
   BreadcrumbSeparator,
-  BreadcrumbLink,
   BreadcrumbPage,
 } from '@/components/ui/breadcrumb'
 
@@ -38,11 +37,10 @@ export default async function BookPage({ params }: { params: { id: string } }) {
   if (!book) return notFound()
   return (
     <div className="relative flex min-h-screen flex-col">
-      <BackButton className="absolute left-4 top-4" />
       <Breadcrumb className="px-8 pt-8">
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink href="/">Home</BreadcrumbLink>
+            <BackBreadcrumb />
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
