@@ -7,6 +7,7 @@ import {
   Sidebar,
   SidebarInset,
 } from "@/components/ui/sidebar";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,27 +31,27 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <SidebarProvider>
-          <div className="flex min-h-screen flex-col md:flex-row">
-            <Sidebar>
-              <nav className="flex flex-col space-y-2 p-4">
-                <Link href="/" className="hover:underline">
-                  Home
-                </Link>
-                <Link href="#" className="hover:underline">
-                  About
-                </Link>
-                <Link href="#" className="hover:underline">
-                  Contact
-                </Link>
-              </nav>
-            </Sidebar>
-            <SidebarInset>{children}</SidebarInset>
-          </div>
-        </SidebarProvider>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <ThemeProvider>
+          <SidebarProvider>
+            <div className="flex min-h-screen flex-col md:flex-row">
+              <Sidebar>
+                <nav className="flex flex-col space-y-2 p-4">
+                  <Link href="/" className="hover:underline">
+                    Home
+                  </Link>
+                  <Link href="#" className="hover:underline">
+                    About
+                  </Link>
+                  <Link href="#" className="hover:underline">
+                    Contact
+                  </Link>
+                </nav>
+              </Sidebar>
+              <SidebarInset>{children}</SidebarInset>
+            </div>
+          </SidebarProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
