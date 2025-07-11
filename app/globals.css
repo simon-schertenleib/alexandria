@@ -123,3 +123,7 @@
     @apply cursor-pointer;
   }
 }
+
+img:hover {
+ filter: brightness(0.75);
+}

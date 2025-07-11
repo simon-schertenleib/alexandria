@@ -1,20 +1,5 @@
-export interface Book {
-  id: number
-  title: string
-  author?: string
-  year?: number
-  description?: string
-  rating?: number
-  genre?: string
-  pages?: number
-  publisher?: string
-  language?: string
-  isbn?: string
-  cover_i?: number
-}
-
-interface OpenLibraryDoc {
-  key?: string
+export interface OpenLibraryDoc {
+  key: string
   title?: string
   author_name?: string[]
   first_publish_year?: number
@@ -24,107 +9,28 @@ interface OpenLibraryDoc {
   number_of_pages_median?: number
   subject?: string[]
   ratings_average?: number
-  first_sentence?: string | { value?: string } | string[]
+  first_sentence?: string
+  cover_i?: string
 }
 
-/**
- * Search third-party websites for books. This currently returns a
- * static list but can be extended to call external APIs via HTTP.
- */
-export const books: Book[] = [
-  {
-    id: 1,
-    title: "The Great Gatsby",
-    author: "F. Scott Fitzgerald",
-    year: 1925,
-    description:
-      "A story of the mysteriously wealthy Jay Gatsby and his love for Daisy Buchanan during the Roaring Twenties.",
-    rating: 4.4,
-    genre: "Novel",
-    pages: 218,
-    publisher: "Charles Scribner's Sons",
-    language: "English",
-    isbn: "9780743273565",
-  },
-  {
-    id: 2,
-    title: "Pride and Prejudice",
-    author: "Jane Austen",
-    year: 1813,
-    description:
-      "A romantic novel that charts the emotional development of Elizabeth Bennet, who learns about the repercussions of hasty judgments.",
-    rating: 4.6,
-    genre: "Romance",
-    pages: 279,
-    publisher: "T. Egerton, Whitehall",
-    language: "English",
-    isbn: "9780199535569",
-  },
-  {
-    id: 3,
-    title: "To Kill a Mockingbird",
-    author: "Harper Lee",
-    year: 1960,
-    description:
-      "A novel about the serious issues of rape and racial inequality told through the eyes of a young girl in the Deep South.",
-    rating: 4.8,
-    genre: "Southern Gothic",
-    pages: 281,
-    publisher: "J.B. Lippincott & Co.",
-    language: "English",
-    isbn: "9780061120084",
-  },
-  {
-    id: 4,
-    title: "1984",
-    author: "George Orwell",
-    year: 1949,
-    description:
-      "A dystopian social science fiction novel and cautionary tale about the dangers of totalitarianism.",
-    rating: 4.7,
-    genre: "Dystopian",
-    pages: 328,
-    publisher: "Secker & Warburg",
-    language: "English",
-    isbn: "9780451524935",
-  },
-  {
-    id: 5,
-    title: "Moby Dick",
-    author: "Herman Melville",
-    year: 1851,
-    description:
-      "The narrative of Captain Ahab's obsessive quest to seek revenge on the white whale that bit off his leg.",
-    rating: 4.2,
-    genre: "Adventure",
-    pages: 585,
-    publisher: "Harper & Brothers",
-    language: "English",
-    isbn: "9781503280786",
-  },
-  {
-    id: 6,
-    title: "War and Peace",
-    author: "Leo Tolstoy",
-    year: 1869,
-    description:
-      "An epic novel that intertwines the lives of private and public individuals during the time of the Napoleonic wars.",
-    rating: 4.5,
-    genre: "Historical",
-    pages: 1225,
-    publisher: "The Russian Messenger",
-    language: "Russian",
-    isbn: "9780199232765",
-  },
+const fields = [
+  "key", 
+  "title", 
+  "author_name", 
+  "first_publish_year", 
+  "publisher", 
+  "isbn", 
+  "language", 
+  "number_of_pages_median", 
+  "subject", 
+  "ratings_average", 
+  "first_sentence", 
+  "cover_i"
 ]
 
-export async function searchBooks(query: string): Promise<Book[]> {
-  if (!query) {
-    return books
-  }
-
+export async function searchBooks(query: string): Promise<OpenLibraryDoc[]> {
   const url =
-    `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=10&fields=key,title,author_name,first_publish_year,publisher,isbn,language,number_of_pages_median,subject,ratings_average,first_sentence,cover_i`
+    `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=10&fields=${fields.join(',')}`
 
   try {
     const res = await fetch(url)
@@ -136,64 +42,21 @@ export async function searchBooks(query: string): Promise<Book[]> {
     }
     const data = await res.json()
     const docs: OpenLibraryDoc[] = Array.isArray(data.docs) ? data.docs : []
-
-    return docs.map((doc: OpenLibraryDoc, idx: number) => {
-      const idMatch = typeof doc.key === 'string' ? doc.key.match(/\d+/) : null
-
-      const book: Book = {
-        id: idMatch ? Number(idMatch[0]) : idx,
-        title: doc.title ?? 'Unknown',
-      }
-
-      if (typeof doc.cover_i === 'number') {
-        book.cover_i = doc.cover_i
-      }
-
-      if (Array.isArray(doc.author_name) && doc.author_name.length > 0) {
-        book.author = doc.author_name[0]
-      }
-      if (doc.first_publish_year) {
-        book.year = doc.first_publish_year
-      }
-      if (doc.publisher && Array.isArray(doc.publisher) && doc.publisher.length) {
-        book.publisher = doc.publisher[0]
-      }
-      if (doc.isbn && Array.isArray(doc.isbn) && doc.isbn.length) {
-        book.isbn = doc.isbn[0]
-      }
-      if (doc.language && Array.isArray(doc.language) && doc.language.length) {
-        book.language = doc.language[0]
-      }
-      if (doc.number_of_pages_median) {
-        book.pages = doc.number_of_pages_median
-      }
-      if (doc.subject && Array.isArray(doc.subject) && doc.subject.length) {
-        book.genre = doc.subject[0]
-      }
-      if (doc.ratings_average) {
-        book.rating = doc.ratings_average
-      }
-      if (doc.first_sentence) {
-        if (typeof doc.first_sentence === 'string') {
-          book.description = doc.first_sentence
-        } else if (
-          Array.isArray(doc.first_sentence) &&
-          doc.first_sentence.length > 0
-        ) {
-          book.description = doc.first_sentence[0]
-        } else if (typeof doc.first_sentence.value === 'string') {
-          book.description = doc.first_sentence.value
-        }
-      }
-
-      return book
-    })
+    return docs.map((doc) => {
+      doc.key = doc.key ? doc.key.replace('works/', '') : '';
+      return doc;
+    });
   } catch (err) {
     console.error('Failed to search books from OpenLibrary', err)
     return []
   }
 }
 
-export async function getBook(id: number): Promise<Book | undefined> {
-  return books.find((b) => b.id === id)
+export async function getBook(key: string): Promise<OpenLibraryDoc | undefined> {
+  return searchBooks(key).then((docs) => {
+    if (docs.length > 0) {
+      return docs[0]
+    }
+    return undefined
+  })
 }
